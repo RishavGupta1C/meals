@@ -35,7 +35,6 @@ class MealItem extends StatelessWidget {
       elevation: 2,
       child: InkWell(
         onTap: onSelectMeal,
-        splashColor: Theme.of(context).primaryColor,
         child: Stack(children: [
           FadeInImage(
             // MemoryImage is a image provider class
