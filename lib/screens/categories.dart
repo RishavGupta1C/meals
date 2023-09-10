@@ -13,6 +13,7 @@ class CategoriesScreen extends StatelessWidget {
       ),
       // For many categories we could use GridView.builder()
       body: GridView(
+        padding: const EdgeInsets.all(24),
         // cross axis is horizontal axis
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
