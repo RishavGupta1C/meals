@@ -52,22 +52,26 @@ class MainDrawer extends StatelessWidget {
                     fontSize: 24,
                   ),
             ),
-            onTap: () {},
+            onTap: () {
+              onSelectScreen('meals');
+            },
           ),
           ListTile(
             leading: Icon(
-              Icons.settings,
+              Icons.filter_alt,
               size: 26,
               color: Theme.of(context).colorScheme.onBackground,
             ),
             title: Text(
-              'Settings',
+              'Filters',
               style: Theme.of(context).textTheme.titleSmall!.copyWith(
                     color: Theme.of(context).colorScheme.onBackground,
                     fontSize: 24,
                   ),
             ),
-            onTap: () {},
+            onTap: () {
+              onSelectScreen('filters');
+            },
           ),
           ListTile(
             leading: Icon(
@@ -82,7 +86,9 @@ class MainDrawer extends StatelessWidget {
                     fontSize: 24,
                   ),
             ),
-            onTap: () {},
+            onTap: () {
+              onSelectScreen('favorites');
+            },
           ),
         ],
       ),
