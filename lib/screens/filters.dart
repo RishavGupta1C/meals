@@ -15,10 +15,10 @@ import 'package:meals/providers/filters_provider.dart';
 class FiltersScreen extends ConsumerStatefulWidget {
   const FiltersScreen({
     Key? key,
-    required this.currentFilters,
+    // required this.currentFilters,
   }) : super(key: key);
 
-  final Map<Filter, bool> currentFilters;
+  // final Map<Filter, bool> currentFilters;
 
   @override
   ConsumerState<FiltersScreen> createState() {
@@ -35,12 +35,21 @@ class _FiltersScreenState extends ConsumerState<FiltersScreen> {
   @override
   void initState() {
     super.initState();
+    // read is used instead of watch, as init state only executes once
+    final activeFilters = ref.read(filtersProvider);
     // We don't need to call setState as initState is called before build()
     // So these values will be available before build() is called.
-    _gluttenFreeFilterState = widget.currentFilters[Filter.glutenFree]!;
-    _lactoseFreeFilterState = widget.currentFilters[Filter.lactoseFree]!;
-    _vegetarianFilterState = widget.currentFilters[Filter.vegetarian]!;
-    _veganFilterState = widget.currentFilters[Filter.vegan]!;
+
+    // _gluttenFreeFilterState = widget.currentFilters[Filter.glutenFree]!;
+    // _lactoseFreeFilterState = widget.currentFilters[Filter.lactoseFree]!;
+    // _vegetarianFilterState = widget.currentFilters[Filter.vegetarian]!;
+    // _veganFilterState = widget.currentFilters[Filter.vegan]!;
+
+    // Using provider
+    _gluttenFreeFilterState = activeFilters[Filter.glutenFree]!;
+    _lactoseFreeFilterState = activeFilters[Filter.lactoseFree]!;
+    _vegetarianFilterState = activeFilters[Filter.vegetarian]!;
+    _veganFilterState = activeFilters[Filter.vegan]!;
   }
 
   @override
@@ -66,17 +75,26 @@ class _FiltersScreenState extends ConsumerState<FiltersScreen> {
       //   }
       // }),
       body: WillPopScope(
-        // Creating Future Suing async.
+        // Creating Future uing async.
         onWillPop: () async {
-          // The mapping will be returned when the back button is pressed.
-          // And then the map is accessible by tabsScreen.
-          Navigator.of(context).pop({
+          // Usig Provider
+          ref.read(filtersProvider.notifier).setFilters({
             Filter.glutenFree: _gluttenFreeFilterState,
             Filter.lactoseFree: _lactoseFreeFilterState,
             Filter.vegetarian: _vegetarianFilterState,
             Filter.vegan: _veganFilterState,
           });
-          return false;
+          return true;
+
+          // The mapping will be returned when the back button is pressed.
+          // And then the map is accessible by tabsScreen.
+          // Navigator.of(context).pop({
+          //   Filter.glutenFree: _gluttenFreeFilterState,
+          //   Filter.lactoseFree: _lactoseFreeFilterState,
+          //   Filter.vegetarian: _vegetarianFilterState,
+          //   Filter.vegan: _veganFilterState,
+          // });
+          // return false;
         },
         child: Column(children: [
           SwitchListTile(

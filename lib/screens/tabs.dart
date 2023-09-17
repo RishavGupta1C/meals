@@ -32,7 +32,7 @@ class TabsScreen extends ConsumerStatefulWidget {
 class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedPageIndex = 0;
   // final List<Meal> _favoriteMeals = [];
-  Map<Filter, bool> _selectedFilters = kInitialFilters;
+  // Map<Filter, bool> _selectedFilters = kInitialFilters;
 
   // void _showInfoMessage(String message) {
   //   // We have globally available context inside State()
@@ -44,22 +44,6 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   //   );
   // }
 
-  // void _toggelMealFavoriteStatus(Meal meal) {
-  //   final isExisting = _favoriteMeals.contains(meal);
-
-  //   if (isExisting) {
-  //     setState(() {
-  //       _favoriteMeals.remove(meal);
-  //     });
-  //     _showInfoMessage('Meal is no longer a favorite.');
-  //   } else {
-  //     setState(() {
-  //       _favoriteMeals.add(meal);
-  //     });
-  //     _showInfoMessage('Marked as a favorite!');
-  //   }
-  // }
-
   void _selectPage(int index) {
     setState(() {
       _selectedPageIndex = index;
@@ -69,16 +53,14 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   void _setScreen(String identifier) async {
     Navigator.of(context).pop();
     if (identifier == 'filters') {
-      final result = await Navigator.of(context).push<Map<Filter, bool>>(
+      // final result = await Navigator.of(context).push<Map<Filter, bool>>(
+      await Navigator.of(context).push<Map<Filter, bool>>(
         MaterialPageRoute(
-          builder: (ctx) => FiltersScreen(
-            currentFilters: _selectedFilters,
-          ),
+          builder: (ctx) => const FiltersScreen(
+              // currentFilters: _selectedFilters,
+              ),
         ),
       );
-      setState(() {
-        _selectedFilters = result ?? kInitialFilters;
-      });
 
       // To replace the current screen and not add the screen to stack
       // Navigator.of(context).pushReplacement(
@@ -94,19 +76,20 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     // Watch is used to add a listener that executes build method again as our data changes
     // And it is recommended to use watch() as often as possible
     // Here if mealsProvider changes build() will be executed
+    // We have ref property available as we are extending ConsumerState Class
     final meals = ref.watch(mealsProvider);
-    // We hae ref property available as we are extending ConsumerState Class
+    final activeFilters = ref.watch(filtersProvider);
     final availableMeals = meals.where((meal) {
-      if (_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
+      if (activeFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
         return false;
       }
-      if (_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
+      if (activeFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
         return false;
       }
-      if (_selectedFilters[Filter.vegetarian]! && !meal.isVegetarian) {
+      if (activeFilters[Filter.vegetarian]! && !meal.isVegetarian) {
         return false;
       }
-      if (_selectedFilters[Filter.vegan]! && !meal.isVegan) {
+      if (activeFilters[Filter.vegan]! && !meal.isVegan) {
         return false;
       }
       return true;
